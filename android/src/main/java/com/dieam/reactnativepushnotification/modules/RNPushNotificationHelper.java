@@ -42,6 +42,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+
 import static com.dieam.reactnativepushnotification.modules.RNPushNotification.LOG_TAG;
 import static com.dieam.reactnativepushnotification.modules.RNPushNotificationAttributes.fromJson;
 
@@ -341,6 +346,16 @@ public class RNPushNotificationHelper {
 
             notification.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
 
+            Log.e("bigPicture Url :", bundle.getString("bigPicture"));
+            String bigPicture = bundle.getString("bigPicture");
+            if (bigPicture != null && bigPicture != "") {
+                Bitmap picture = getBitmapFromUrl(bigPicture);
+                notification.setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(picture)
+                        .bigLargeIcon(null)
+                ).build();
+            }
+
             Intent intent = new Intent(context, intentClass);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             bundle.putBoolean("userInteraction", true);
@@ -567,6 +582,18 @@ public class RNPushNotificationHelper {
                 bundle.putDouble("fireDate", newFireDate);
                 this.sendNotificationScheduled(bundle);
             }
+        }
+    }
+
+    private Bitmap getBitmapFromUrl(String imageUrl) {
+        try {
+        HttpURLConnection connection = (HttpURLConnection) new URL(imageUrl).openConnection();
+        connection.setDoInput(true);
+        connection.connect();
+        return BitmapFactory.decodeStream(connection.getInputStream());
+        } catch (IOException e) {
+        Log.e(LOG_TAG, "Failed to get bitmap for url: " + imageUrl, e);
+        return null;
         }
     }
 
