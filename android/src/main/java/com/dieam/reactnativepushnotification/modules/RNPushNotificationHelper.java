@@ -325,15 +325,21 @@ public class RNPushNotificationHelper {
                 }
             }
 
+            Bitmap largeIconBitmap;
+
             if (largeIcon != null) {
-                largeIconResId = res.getIdentifier(largeIcon, "mipmap", packageName);
+                if (largeIcon.startsWith("http://") || largeIcon.startsWith("https://")) {
+                    largeIconBitmap = getBitmapFromUrl(largeIcon);
+                } else {
+                    largeIconResId = res.getIdentifier(largeIcon, "mipmap", packageName);
+                    largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
+                }
             } else {
                 largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
+                largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
             }
 
-            Bitmap largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
-
-            if (largeIconResId != 0 && (largeIcon != null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)) {
+            if (largeIconBitmap != null) {    
                 notification.setLargeIcon(largeIconBitmap);
             }
 
@@ -343,17 +349,24 @@ public class RNPushNotificationHelper {
             if (bigText == null) {
                 bigText = bundle.getString("message");
             }
-
             notification.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
 
-            Log.e("bigPicture Url :", bundle.getString("bigPicture"));
+
+            //Log.e("bigPicture Url :", bundle.getString("bigPicture"));
             String bigPicture = bundle.getString("bigPicture");
-            if (bigPicture != null && bigPicture != "") {
+            if (bigPicture != null && !bigPicture.isEmpty()) {
+                NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
                 Bitmap picture = getBitmapFromUrl(bigPicture);
-                notification.setStyle(new NotificationCompat.BigPictureStyle()
-                        .bigPicture(picture)
-                        .bigLargeIcon(null)
-                ).build();
+                bigPictureStyle.bigPicture(picture);
+                String bigContentTitle = bundle.getString("bigContentTitle");
+                if(bigContentTitle != null) {
+                    bigPictureStyle.setBigContentTitle(bigContentTitle);
+                }
+                String summaryText = bundle.getString("summaryText");
+                if(summaryText != null) {
+                    bigPictureStyle.setSummaryText(summaryText);
+                }
+                notification.setStyle(bigPictureStyle);
             }
 
             Intent intent = new Intent(context, intentClass);

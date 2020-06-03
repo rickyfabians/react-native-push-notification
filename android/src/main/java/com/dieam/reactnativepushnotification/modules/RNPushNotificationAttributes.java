@@ -22,6 +22,7 @@ public class RNPushNotificationAttributes {
     private static final String LARGE_ICON = "largeIcon";
     private static final String SMALL_ICON = "smallIcon";
     private static final String BIG_TEXT = "bigText";
+    private static final String BIG_PICTURE = "bigPicture";
     private static final String SUB_TEXT = "subText";
     private static final String NUMBER = "number";
     private static final String SOUND = "sound";
@@ -46,6 +47,7 @@ public class RNPushNotificationAttributes {
     private final String largeIcon;
     private final String smallIcon;
     private final String bigText;
+    private final String bigPicture;
     private final String subText;
     private final String number;
     private final String sound;
@@ -71,6 +73,7 @@ public class RNPushNotificationAttributes {
         largeIcon = bundle.getString(LARGE_ICON);
         smallIcon = bundle.getString(SMALL_ICON);
         bigText = bundle.getString(BIG_TEXT);
+        bigPicture = bundle.getString(BIG_PICTURE);
         subText = bundle.getString(SUB_TEXT);
         number = bundle.getString(NUMBER);
         sound = bundle.getString(SOUND);
@@ -98,6 +101,7 @@ public class RNPushNotificationAttributes {
             largeIcon = jsonObject.has(LARGE_ICON) ? jsonObject.getString(LARGE_ICON) : null;
             smallIcon = jsonObject.has(SMALL_ICON) ? jsonObject.getString(SMALL_ICON) : null;
             bigText = jsonObject.has(BIG_TEXT) ? jsonObject.getString(BIG_TEXT) : null;
+            bigPicture = jsonObject.has(BIG_PICTURE) ? jsonObject.getString(BIG_PICTURE) : null;
             subText = jsonObject.has(SUB_TEXT) ? jsonObject.getString(SUB_TEXT) : null;
             number = jsonObject.has(NUMBER) ? jsonObject.getString(NUMBER) : null;
             sound = jsonObject.has(SOUND) ? jsonObject.getString(SOUND) : null;
@@ -182,6 +186,7 @@ public class RNPushNotificationAttributes {
         bundle.putString(LARGE_ICON, largeIcon);
         bundle.putString(SMALL_ICON, smallIcon);
         bundle.putString(BIG_TEXT, bigText);
+        bundle.putString(BIG_PICTURE, bigPicture);
         bundle.putString(SUB_TEXT, subText);
         bundle.putString(NUMBER, number);
         bundle.putString(SOUND, sound);
@@ -211,6 +216,7 @@ public class RNPushNotificationAttributes {
             jsonObject.put(LARGE_ICON, largeIcon);
             jsonObject.put(SMALL_ICON, smallIcon);
             jsonObject.put(BIG_TEXT, bigText);
+            jsonObject.put(BIG_PICTURE, bigPicture);
             jsonObject.put(SUB_TEXT, subText);
             jsonObject.put(NUMBER, number);
             jsonObject.put(SOUND, sound);
@@ -246,6 +252,7 @@ public class RNPushNotificationAttributes {
                 ", largeIcon='" + largeIcon + '\'' +
                 ", smallIcon='" + smallIcon + '\'' +
                 ", bigText='" + bigText + '\'' +
+                ", bigPicture='" + bigPicture + '\'' +
                 ", subText='" + subText + '\'' +
                 ", number='" + number + '\'' +
                 ", sound='" + sound + '\'' +
